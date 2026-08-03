@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CONTROLE VANS BOURBON COUNTRY</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- FontAwesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- CABEÇALHO -->
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <button id="hamburger-btn" class="icon-btn" title="Abrir Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <h1>CONTROLE VANS BOURBON COUNTRY</h1>
+    </div>
+    <div class="top-bar-right">
+      <button id="theme-toggle-btn" class="icon-btn" title="Alternar Modo Escuro/Claro">
+        <i class="fa-solid fa-moon" id="theme-icon"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- MENU LATERAL (HAMBÚRGUER) -->
+  <nav id="side-menu" class="side-menu">
+    <div class="menu-header">
+      <h2>Linhas de Vans</h2>
+      <button id="close-menu-btn" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <ul class="menu-list">
+      <li>
+        <button class="van-btn" data-id="van1" 
+          data-route="Sarandi, Santa Rosa, Passo d’Areia, Parque dos Maias, Nova Gleba, Assis Brasil (Ubirici sentido triângulo), Costa e Silva, Santa Fé.">
+          1. VAN PORTO ALEGRE ZONA NORTE L.E
+        </button>
+      </li>
+      <li>
+        <button class="van-btn" data-id="van2" 
+          data-route="Vila Jardim, Itu Sabará, Passo das Pedras, Rubem Berta, Cohab, Mário Quintana, Vila Ipiranga, Jardim Leopoldina, Timbaúva.">
+          2. VAN PORTO ALEGRE ZONA NORTE L.D
+        </button>
+      </li>
+      <li>
+        <button class="van-btn" data-id="van3" 
+          data-route="Jardim Aparecida, Algarve, Porto Verde, Formosa, Lagoa do Cocão, Stella Maris, Intersul, Terra Nova, Jardim Porto Alegre, Jardim Alvorada.">
+          3. VAN ALVORADA PARTE CIMA
+        </button>
+      </li>
+      <li>
+        <button class="van-btn" data-id="van4" 
+          data-route="Americana, Umbú, Salomé, Maria Regina, Passo da Figueira, São Pedro, Caxambu, Tijuca, Piratini.">
+          4. VAN ALVORADA PARTE BAIXO
+        </button>
+      </li>
+    </ul>
+    <div class="menu-footer">
+      <button id="about-btn" class="btn secondary-btn" style="width: 100%; margin-bottom: 8px;">
+        <i class="fa-solid fa-circle-info"></i> Sobre a Aplicação
+      </button>
+      <button id="exit-btn" class="btn danger-btn" style="width: 100%;">
+        <i class="fa-solid fa-right-from-bracket"></i> Sair
+      </button>
+    </div>
+  </nav>
+
+  <div id="overlay" class="overlay"></div>
+
+  <!-- CONTAINER DE NOTIFICAÇÕES (TOASTS) -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="main-content">
+    
+    <!-- TELA INICIAL / HOME -->
+    <section id="home-view" class="home-view">
+    </section>
+
+    <!-- SEÇÃO DE GERENCIAMENTO DA VAN SELECIONADA -->
+    <section id="van-management" class="van-management hidden">
+      <div class="van-header">
+        <h2 id="current-van-title">Nome da Van</h2>
+        <div class="badge-container">
+          <span id="capacity-badge" class="badge">Status Lotação</span>
+        </div>
+      </div>
+
+      <!-- PAINEL MOTORISTA, CAPACIDADE E BARRA DE PROGRESSO -->
+      <div class="card">
+        <h3><i class="fa-solid fa-id-card"></i> Dados da Van</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="driver-name">Motorista (Apenas 1 por van):</label>
+            <input type="text" id="driver-name" placeholder="Nome do motorista">
+          </div>
+          <div class="form-group short">
+            <label for="max-capacity">Capacidade (Lotação):</label>
+            <input type="number" id="max-capacity" min="1" value="16">
+          </div>
+        </div>
+
+        <!-- BARRA DE PROGRESSO DE LOTAÇÃO -->
+        <div class="progress-container">
+          <div class="progress-info">
+            <span>Ocupação da Van</span>
+            <span id="progress-text">0 / 16 vagas</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CADASTRO DE COLABORADORES -->
+      <div class="card" id="collab-section-card">
+        <h3><i class="fa-solid fa-users"></i> Cadastrar / Editar Colaborador</h3>
+        <form id="collab-form">
+          <input type="hidden" id="collab-id">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="collab-name">Nome do Colaborador:</label>
+              <input type="text" id="collab-name" required placeholder="Nome completo">
+            </div>
+            <div class="form-group">
+              <label for="collab-sector">Setor:</label>
+              <input type="text" id="collab-sector" required placeholder="Ex: Loja, Depósito, SAC">
+            </div>
+            <div class="form-actions-inline">
+              <button type="submit" id="save-collab-btn" class="btn primary-btn">
+                <i class="fa-solid fa-plus"></i> Adicionar
+              </button>
+              <button type="button" id="cancel-edit-btn" class="btn secondary-btn hidden">Cancelar</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- LISTA DE COLABORADORES -->
+        <div class="table-header-info">
+          <span id="occupants-counter-text">Ocupantes cadastrados: 0</span>
+        </div>
+        <div class="table-wrapper">
+          <table id="collab-table">
+            <thead>
+              <tr>
+                <th>Colaborador</th>
+                <th>Setor</th>
+                <th class="action-th">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="collab-list">
+              <!-- Preenchido via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BOTÕES DE AÇÃO DA TELA DA VAN -->
+      <div class="main-actions">
+        <button id="save-all-btn" class="btn success-btn">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações da Van
+        </button>
+        <button id="back-home-btn" class="btn secondary-btn" style="width: 100%; margin-top: 10px; justify-content: center;">
+          <i class="fa-solid fa-arrow-left"></i> Voltar
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: AUTENTICAÇÃO DE SENHA -->
+  <div id="password-modal" class="modal hidden">
+    <div class="modal-content" style="max-width: 380px;">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-lock"></i> Autenticação Requerida</h2>
+        <button class="close-modal-btn icon-btn" id="close-pass-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <p style="margin-bottom: 15px; font-size: 0.9rem;">Insira a senha de acesso para habilitar a edição:</p>
+        <div style="position: relative; margin-bottom: 20px;">
+          <input type="password" id="auth-password-input" placeholder="Senha" style="width: 100%; padding-right: 40px;">
+          <button type="button" id="toggle-pass-visibility" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem;">
+            <i class="fa-solid fa-eye" id="eye-icon"></i>
+          </button>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" id="cancel-auth-btn" class="btn secondary-btn" style="flex: 1;">Cancelar</button>
+          <button type="button" id="confirm-auth-btn" class="btn primary-btn" style="flex: 1;">Entrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SOBRE A APLICAÇÃO -->
+  <div id="about-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Sobre o Controle Vans Bourbon Country</h2>
+        <button class="close-modal-btn icon-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Esta aplicação foi desenvolvida para organizar e gerenciar a ocupação e rota das vans que atendem a unidade Bourbon Country.</p>
+        <p><strong>Funcionalidades principais:</strong></p>
+        <ul>
+          <li><strong>Passe o mouse</strong> sobre os botões do menu para visualizar os bairros atendidos.</li>
+          <li><strong>Clique 1 vez</strong> no botão da Van (após autenticação) para gerenciar motorista, capacidade e colaboradores.</li>
+          <li><strong>Clique 2 vezes</strong> no botão da Van para visualizar o relatório resumido dos ocupantes em tempo real.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: STATUS E OCUPANTES (DUPLO CLIQUE) -->
+  <div id="occupants-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-van-title">Resumo da Van</h2>
+        <button class="close-modal-btn icon-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="status-summary-box">
+          <p><strong>Motorista Cadastrado:</strong> <span id="modal-driver-name">Nenhum</span></p>
+          <p><strong>Capacidade Total:</strong> <span id="modal-capacity">0</span> lugares</p>
+          <p><strong>Ocupantes Atuais:</strong> <span id="modal-count">0</span></p>
+          <p><strong>Status:</strong> <span id="modal-status-badge" class="badge">--</span></p>
+        </div>
+        <h3>Lista de Ocupantes Cadastrados</h3>
+        <ul id="modal-occupants-list" class="occupants-list">
+          <!-- Preenchido via JS -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLTIP / POP-UP HOVER DA ROTA -->
+  <div id="route-tooltip" class="route-tooltip hidden"></div>
+
+  <!-- RODAPÉ -->
+  <footer class="footer">
+    <p>© 2026 – desenvolvido por Rodrigo Silveira. Versão 1.1.0 – <a href="#" id="terms-link">termos de uso clique aqui</a></p>
+  </footer>
+
+  <!-- CARREGAMENTO DO JS E FIREBASE -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
