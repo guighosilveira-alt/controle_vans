@@ -34,22 +34,24 @@ body.dark-mode {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-html, body {
-  height: 100%;
-  width: 100%;
+/* GARANTE QUE HTML E BODY PERMITAM CRESCIMENTO DINÂMICO */
+html {
+  min-height: 100%;
+  height: auto;
+}
+
+body {
+  min-height: 100vh;
+  height: auto;
   background-color: var(--bg-light);
   color: var(--text-color);
   display: flex;
   flex-direction: column;
-}
-
-/* PLANO DE FUNDO COM A IMAGEM LOGO_VAN.PNG OCUPANDO TELA TODA */
-body {
   background-image: url('logo_van.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-attachment: local; /* Permite que o fundo acompanhe o fluxo e a rolagem da página */
 }
 
 /* TOP BAR */
@@ -509,3 +511,4 @@ tbody tr:hover {
 }
 
 .footer a { color: var(--primary); text-decoration: none; }
+  
