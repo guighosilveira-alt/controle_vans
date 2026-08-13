@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-/*
+
 // CONFIGURAÇÃO DO FIREBASE (INSIRA SUAS CREDENCIAIS REAIS)
 const firebaseConfig = {
   apiKey: "AIzaSyBAd6FjJyipmiWRnmMUzc353XMyCT9ldc",
@@ -10,7 +10,7 @@ const firebaseConfig = {
   messagingSenderId: "859690609728",
   appId: "1:859690609728:web:a407eae7447b869c7243a5"
 };
-*/
+
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
